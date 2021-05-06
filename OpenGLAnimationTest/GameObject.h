@@ -49,18 +49,32 @@ public:
 	void Render(Shader* shader);
 
 private:
-	Skeleton					mSkeleton;
-	vector<Mesh>				mMeshes;
+//	Is there any reason to separate these from the Model object?
+	Skeleton		mSkeleton;
+	vector<Mesh>	mMeshes;
 
-	Animator*					mAnimator;
-//	Collision					mCollision;
-	string						mDirectory;
+	Animator*		mAnimator;
+//	Collision		mCollision;
+	string			mDirectory;
 
-	glm::vec3					mPosition;
-	glm::vec3					mRotation;
-	glm::vec3					mScale;
+/*	Like Unity, we can potentially contain all these 3D vectors into a single class 'Transform'.
+	This way I can simply point to this Transform object from other class objects to either move
+	this GameObject or have access to the relevant vectors instead of referencing each vector
+	separately.
+	Should I make this Transform object PUBLIC or PRIVATE? */
+//	Transform		mTransform;
 
-	glm::mat4					mModelMatrix;
+	glm::vec3		mPosition;
+//	Consider using a quaternion instead of a vector.
+//	You will have to research the math behind quaternions (euler angles) before using it.
+//	glm::quat		mRotation;
+	glm::vec3		mRotation;
+	glm::vec3		mScale;
+
+//	Is there any reason to have a model matrix property for a GameObject? It would probably be
+//	better to create a function to make and return the matrix in the Transform class and only call
+//	it when we need to send it to the GameObject's shader.
+	glm::mat4		mModelMatrix;
 
 	void UpdateModelMatrix();
 };

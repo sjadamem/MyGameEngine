@@ -5,22 +5,32 @@
 
 #include <vector>
 
+enum CollisionShape
+{
+	BOX, SPHERE, PILL
+};
+
 class Collision
 {
 public:
-	glm::vec3	mCollisionOrigin;
-	float		mHeight;
-	float		mWidth;
-	float		mDepth;
 
-	Collision(glm::vec3 origin, float height, float width, float depth) :
-		mCollisionOrigin(origin), mHeight(height), mWidth(width), mDepth(depth)
-	{ };
+	CollisionShape mCollisionType;
+
+	Collision(
+		float rightX, float leftX, 
+		float topY, float botY, 
+		float farZ, float nearZ, 
+		CollisionShape type = BOX);
+
+	void Update();
 
 	bool CheckCollision();
 
 private:
-	
+	std::vector<glm::vec3>  mCollisionPoints;
+	glm::vec3				mCollisionOrigin;
+
+	void Initialize(float rightX, float leftX, float topY, float botY, float farZ, float nearZ);
 };
 
 #endif

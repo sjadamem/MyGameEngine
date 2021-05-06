@@ -61,12 +61,12 @@ public:
 	void SetBoneAnimationMap(map<string, AnimationData>* animMap) 
 		{ mBoneAnimationMap = animMap; }
 private:
-	vector<glm::mat4>					mFinalTransformMatrices;
+	vector<glm::mat4>			mFinalTransformMatrices;
 	
-	glm::mat4							mGlobalInverseTransformMatrix;
+	glm::mat4					mGlobalInverseTransformMatrix;
 	
-	map<string, Bone>					mBoneMap;
-	vector<Node*>						mNodes;
+	map<string, Bone>			mBoneMap;
+	vector<Node*>				mNodes;
 
 	map<string, AnimationData>*	mBoneAnimationMap;
 

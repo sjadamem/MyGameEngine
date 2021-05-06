@@ -167,7 +167,7 @@ void Skeleton::freeAssimpNodeData(const aiNode* node)
 	string name = node->mName.data;
 	glm::mat4 trans = GlobalResources::aiMat4_to_glmMat4(node->mTransformation);
 	unsigned int children = node->mNumChildren;
-
+	
 	mNodes.push_back(new Node(name, trans, children));
 
 	for (unsigned int i = 0; i < children; i++)

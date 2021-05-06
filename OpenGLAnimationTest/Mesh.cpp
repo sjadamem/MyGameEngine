@@ -1,12 +1,5 @@
 #include "Mesh.h"
 
-Mesh::Mesh(unsigned int nrIndices, unsigned int baseVertexID, unsigned int baseIndexID)
-{
-	mNumOfIndices = nrIndices;
-	mBaseVertexID = baseVertexID;
-	mBaseIndexID = baseIndexID;
-}
-
 Mesh::Mesh(VertexBoneData * vertices, const unsigned int & nrVertices, unsigned int * indices, const unsigned int & nrIndices, Texture * textures)
 {
 	this->nrVertices = nrVertices;
