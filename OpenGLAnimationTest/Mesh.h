@@ -18,6 +18,8 @@
 #define IDS			3
 #define WEIGHTS		4
 
+//Test from the new branch
+
 /*
 You will have to consider the fact that not all meshes will be skinned (skeletal). The way you have
 it, there are two separate Initialize functions for skinned and static meshes respectively. Both 
