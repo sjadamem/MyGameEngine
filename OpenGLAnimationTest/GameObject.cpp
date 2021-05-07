@@ -37,7 +37,7 @@ void GameObject::Render(Shader* shader)
 	shader->SetMat4("model", mModelMatrix);
 	
 	for (unsigned int i = 0; i < mMeshes.size(); i++)
-		mMeshes[i].Render(shader);
+		mMeshes[i]->Render(shader);
 }
 
 void GameObject::UpdateModelMatrix()

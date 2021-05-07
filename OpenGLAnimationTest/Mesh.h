@@ -18,6 +18,8 @@
 #define IDS			3
 #define WEIGHTS		4
 
+//Test from the new branch
+
 /*
 You will have to consider the fact that not all meshes will be skinned (skeletal). The way you have
 it, there are two separate Initialize functions for skinned and static meshes respectively. Both 
@@ -37,40 +39,34 @@ class Mesh
 {
 public:
 
-	Mesh() { }
-	Mesh(VertexBoneData* vertices, const unsigned int& nrVertices, unsigned int* indices, const unsigned int& nrIndices, Texture* textures = nullptr);
-	Mesh(Vertex* vertices, const unsigned int& nrVertices, 
-		unsigned int* indices, const unsigned int& nrIndices, 
-		BoneData* bones = nullptr, const unsigned int& nrBones = 0, 
-		Texture* texture = nullptr);
-	~Mesh();
+	Mesh() { };
+	Mesh(VertexBoneData* vertices, const unsigned int& nrVertices,
+		unsigned int* indices, const unsigned int& nrIndices,
+		Texture* textures, const unsigned int& nrTextures);
 
-	void Initialize(Vertex* vertices, unsigned int* indices, BoneData* bones = nullptr);
-	void Initialize(VertexBoneData* vertices, unsigned int* indices);
-
-	void SetTextures(Texture* textures);
+	~Mesh() { };
+	
 	void Render(Shader* shader);
 
+//	void Initialize(Vertex* vertices, unsigned int* indices, BoneData* bones = nullptr);
 
-private:
-	std::vector<Texture> mTextures;
+protected:
+	VertexBoneData* mVertices;
+	unsigned int	mNrVertices;
+
+	unsigned int*	mIndices;
+	unsigned int	mNrIndices;
+	
+	Texture*		mTextures;
+	unsigned int	mNrTextures;
 
 //	We might need the actual vertex position data from the vertex data we pass in to read thru and
 //	find the peak height, widest width and furthest depth coordinates from the mesh's origin.
 
-//	std::vector<VertexBoneData> mVertices;
-//	std::vector<unsigned int>	mIndices;
-//	std::vector<BoneData>		mBones;
-
-//	These counts might become obsolete since we can simply obtain the sizes by invoking the size of
-//	the respective vectors.
-	unsigned int nrVertices;
-	unsigned int nrIndices;
-	unsigned int nrBones;
-
 //	SkeletalMesh/SkinnedMesh will have to have boneEBO
-	unsigned int VAO, vertexBO, boneBO, EBO;
+	unsigned int VAO, VBO, EBO;
 
+	virtual void Initialize() = 0;
 };
 
 #endif

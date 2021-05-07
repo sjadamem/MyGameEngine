@@ -224,7 +224,7 @@ void Model::processMeshes(const aiScene * scene, const aiMesh * mesh)
 		}
 	}
 
-	mMeshes.push_back(Mesh(vertices.data(), vertices.size(), indices.data(), indices.size(), textures.data()));
+	mMeshes.push_back(new SkeletalMesh(vertices.data(), vertices.size(), indices.data(), indices.size(), textures.data(), textures.size()));
 }
 
 vector<Texture> Model::processMaterials(aiMaterial* mat, aiTextureType type, string textureType)

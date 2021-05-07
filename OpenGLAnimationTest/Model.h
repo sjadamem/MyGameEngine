@@ -15,6 +15,7 @@
 #include "Texture.h"
 #include "VertexData.h"
 #include "Mesh.h"
+#include "SkeletalMesh.h"
 #include "Skeleton.h"
 
 #include "Shader.h"
@@ -27,7 +28,7 @@ public:
 	Model(const std::string& modelDir);
 
 	inline Skeleton GetSkeleton() { return mSkeleton; }
-	inline vector<Mesh> GetMeshes() { return mMeshes; }
+	inline vector<Mesh*> GetMeshes() { return mMeshes; }
 
 private:
 	static vector<Texture> all_loaded_textures;
@@ -35,7 +36,7 @@ private:
 	unsigned int			mNumOfBones;
 	map<string, Bone>		mBoneMap;				//string = name, Bone has id
 
-	vector<Mesh>	mMeshes;
+	vector<Mesh*>	mMeshes;
 	Skeleton		mSkeleton;
 
 	string directory;
