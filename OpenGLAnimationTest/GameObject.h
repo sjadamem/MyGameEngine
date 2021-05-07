@@ -51,7 +51,7 @@ public:
 private:
 //	Is there any reason to separate these from the Model object?
 	Skeleton		mSkeleton;
-	vector<Mesh>	mMeshes;
+	vector<Mesh*>	mMeshes;
 
 	Animator*		mAnimator;
 //	Collision		mCollision;
