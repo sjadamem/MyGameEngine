@@ -22,6 +22,21 @@ void GameObject::SetCurrentAnimation(const std::string & animName)
 	mAnimator->SetCurrentAnimation(animName);
 }
 
+void GameObject::CreateCollision()
+{
+	float pX, nX, pY, nY, pZ, nZ = 0;
+
+	for (unsigned int i = 0; i < mMeshes.size(); i++)
+	{
+		mMeshes[i]->FindMaximumPoints(pX, nX, pY, nY, pZ, nZ);
+	}
+
+	cout << "PosX\t" << pX << "\nNegX\t" << nX << "\nPosY\t" << pY << "\nNegY\t" << nY <<
+		"\nPosZ\t" << pZ << "\nNegZ\t" << nZ << endl << endl;
+
+//	Collision(pX, nX, pY, nY, pZ, nZ);
+}
+
 void GameObject::Update(float deltaTime)
 {
 	UpdateModelMatrix();

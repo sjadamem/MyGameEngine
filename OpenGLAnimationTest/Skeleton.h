@@ -14,6 +14,7 @@
 
 #include "GlobalResources.h"
 #include "VertexData.h"
+#include "Transform.h"
 
 #define MAX_NUM_OF_BONES	100
 
@@ -21,13 +22,13 @@ using namespace std;
 
 struct Node
 {
-	string mNodeName;
+	string			mNodeName;
 
-	glm::mat4 mTransformationMatrix;
+	glm::mat4		mTransformationMatrix;
 
-	unsigned int mNumChildren;
-	Node*  mParentNode;
-	Node** mChildrenNodes;
+	unsigned int	mNumChildren;
+	Node*			mParentNode;
+	Node**			mChildrenNodes;
 
 	Node(string name, glm::mat4 offset, unsigned int children) :
 		mNodeName(name), mTransformationMatrix(offset), mNumChildren(children), mParentNode(NULL)
@@ -38,8 +39,10 @@ struct Node
 
 struct Bone
 {
-	unsigned int			mID;
-	glm::mat4				mOffsetMatrix;
+	unsigned int	mID;
+	glm::mat4		mOffsetMatrix;
+
+//	Transform		mTransform;
 
 	Bone() {}
 	Bone(unsigned int id, glm::mat4 offset) : mID(id), mOffsetMatrix(offset) { }
@@ -70,15 +73,15 @@ private:
 
 	map<string, AnimationData>*	mBoneAnimationMap;
 
-	void InterpolatePosition(glm::vec3& position, float& animTime, AnimationData& animData);
-	void InterpolateRotation(glm::quat& rotation, float& animTime, AnimationData& animData);
-	void InterpolateScaling(glm::vec3& scaling, float& animTime, AnimationData& animData);
+	void			InterpolatePosition(glm::vec3& position, float& animTime, AnimationData& animData);
+	void			InterpolateRotation(glm::quat& rotation, float& animTime, AnimationData& animData);
+	void			InterpolateScaling(glm::vec3& scaling, float& animTime, AnimationData& animData);
 
-	unsigned int FindPositionKey(float& animTime, vector<PositionKey>& posKeys);
-	unsigned int FindRotationKey(float& animTime, vector<RotationKey>& rotKeys);
-	unsigned int FindScalingKey(float& animTime, vector<ScalingKey>& scaleKeys);
+	unsigned int	FindPositionKey(float& animTime, vector<PositionKey>& posKeys);
+	unsigned int	FindRotationKey(float& animTime, vector<RotationKey>& rotKeys);
+	unsigned int	FindScalingKey(float& animTime, vector<ScalingKey>& scaleKeys);
 
-	void ReadNodeHeirarchy(float animTime, Node* node, glm::mat4& parentTransform);
+	void			ReadNodeHeirarchy(float animTime, Node* node, glm::mat4& parentTransform);
 
 	void			freeAssimpNodeData(const aiNode* node);
 	void			linkNodes(const aiNode* node);

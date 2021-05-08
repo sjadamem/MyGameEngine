@@ -65,7 +65,7 @@ int main()
 	human->SetCurrentAnimation("idle");
 	
 	human->StartAnimator();
-
+	human->CreateCollision();
 
 	shader.Use();
 
@@ -108,7 +108,7 @@ int main()
 			}
 		}
 
-		cout << modelRotate.y << endl;
+//		cout << modelRotate.y << endl;
 
 		human->Update(GlobalResources::deltaTime);
 		

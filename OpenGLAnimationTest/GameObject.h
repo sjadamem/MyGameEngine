@@ -15,6 +15,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "Animator.h"
+//#include "Transform.h"
 
 using namespace std;
 
@@ -36,6 +37,8 @@ public:
 	void AddAnimation(const std::string& animName, const std::string& animFilePath, bool loop = false);
 	void SetCurrentAnimation(const std::string& animName);
 	
+	void CreateCollision();
+
 	inline glm::vec3 getRotation() { return mRotation; }
 
 	inline void StartAnimator() { mAnimator->StartAnimator(); }

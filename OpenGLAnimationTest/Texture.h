@@ -13,6 +13,7 @@ class Texture
 public:
 	std::string textureType;
 	
+	Texture() { };
 	Texture(std::string texturePath, std::string textureType);
 
 	void BindTexture() { glBindTexture(GL_TEXTURE_2D, textureID); }
