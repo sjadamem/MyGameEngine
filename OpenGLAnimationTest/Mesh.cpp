@@ -5,15 +5,47 @@ Mesh::Mesh(
 	unsigned int* indices, const unsigned int& nrIndices,
 	Texture* textures, const unsigned int& nrTextures)
 {
-	mVertices	= vertices;
-	mIndices	= indices;
+	mVertices	= new VertexBoneData[nrVertices];
+	for (unsigned int i = 0; i < nrVertices; i++)
+		mVertices[i] = *(vertices + i);
+
+	mIndices	= new unsigned int[nrIndices];
+	for (unsigned int i = 0; i < nrIndices; i++)
+		mIndices[i] = *(indices + i);
 
 	if (textures != nullptr)
-		mTextures = textures;
+	{
+		mTextures = new Texture[nrTextures];
+		for (unsigned int i = 0; i < nrTextures; i++)
+			mTextures[i] = *(textures + i);
+	}
 
 	mNrVertices = nrVertices;
 	mNrIndices	= nrIndices;
 	mNrTextures = nrTextures;
+}
+
+void Mesh::FindMaximumPoints(float& posX, float& negX, float& posY, float& negY, float& posZ, float& negZ)
+{
+	for (unsigned int i = 0; i < mNrVertices; i++)
+	{
+		glm::vec3 vert = mVertices[i].Position;
+
+		if (vert.x > posX)
+			posX = vert.x;
+		if (vert.x < negX)
+			negX = vert.x;
+
+		if (vert.y > posY)
+			posY = vert.y;
+		if (vert.y < negY)
+			negY = vert.y;
+
+		if (vert.z > posZ)
+			posZ = vert.z;
+		if (vert.z < negX)
+			negX = vert.z;
+	}
 }
 
 void Mesh::Render(Shader* shader)

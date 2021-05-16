@@ -1,12 +1,16 @@
 #include "Collision.h"
 
 Collision::Collision(
-	float rightX, float leftX, 
-	float topY, float botY, 
-	float farZ, float nearZ, 
-	CollisionShape type)
+	float posX, float negX,
+	float posY, float negY,
+	float posZ, float negZ,
+	Transform* trans) :
+	mPositiveX(posX), mNegativeX(negX),
+	mPositiveY(posY), mNegativeY(negY),
+	mPositiveZ(posZ), mNegativeZ(negZ),
+	mTransform(trans)
 {
-
+	InitializeCollisionBox();
 }
 
 bool Collision::CheckCollision()
@@ -15,16 +19,18 @@ bool Collision::CheckCollision()
 	return true;
 }
 
-void Collision::Initialize(float rightX, float leftX, float topY, float botY, float farZ, float nearZ)
+void Collision::InitializeCollisionBox()
 {
-	glm::vec3 point1(rightX, topY, farZ);
-	glm::vec3 point2(rightX, topY, nearZ);
-	glm::vec3 point3(leftX,	 topY, nearZ);
-	glm::vec3 point4(leftX,  topY, farZ);
-	glm::vec3 point5(rightX, botY, farZ);
-	glm::vec3 point6(rightX, botY, nearZ);
-	glm::vec3 point7(leftX,  botY, nearZ);
-	glm::vec3 point8(leftX,  botY, farZ);
+	mCollisionPoints.push_back(glm::vec3(mPositiveX, mPositiveY, mPositiveZ));
+	mCollisionPoints.push_back(glm::vec3(mPositiveX, mPositiveY, mNegativeZ));
+	mCollisionPoints.push_back(glm::vec3(mNegativeX, mPositiveY, mNegativeZ));
+	mCollisionPoints.push_back(glm::vec3(mNegativeX, mPositiveY, mPositiveZ));
+	mCollisionPoints.push_back(glm::vec3(mPositiveX, mNegativeY, mPositiveZ));
+	mCollisionPoints.push_back(glm::vec3(mPositiveX, mNegativeY, mNegativeZ));
+	mCollisionPoints.push_back(glm::vec3(mNegativeX, mNegativeY, mNegativeZ));
+	mCollisionPoints.push_back(glm::vec3(mNegativeX, mNegativeY, mPositiveZ));
 
-	mCollisionOrigin = (point1 - point7) / 2.0f;
+	mCollisionOrigin = 
+		(glm::vec3(mPositiveX, mPositiveY, mPositiveZ) 
+			- glm::vec3(mNegativeX, mNegativeY, mNegativeZ)) / 2.0f;
 }

@@ -5,7 +5,16 @@
 
 #include <vector>
 
-enum CollisionShape
+#include "Transform.h"
+
+/*
+*******NOTE*******
+You will probably need to make this an abstract class and have derived classes for different shape 
+of collision such as BoxCollision, SphereCollision, PillCollision for 3D collision, or even
+SquareCollision and CircleCollision for 2D collision.
+*/
+
+enum CollisionType
 {
 	BOX, SPHERE, PILL
 };
@@ -13,24 +22,27 @@ enum CollisionShape
 class Collision
 {
 public:
-
-	CollisionShape mCollisionType;
+	Transform* mTransform;
 
 	Collision(
 		float rightX, float leftX, 
 		float topY, float botY, 
 		float farZ, float nearZ, 
-		CollisionShape type = BOX);
+		Transform* trans = new Transform());
 
 	void Update();
 
 	bool CheckCollision();
 
+	inline void SetNewTransform(Transform* trans) { mTransform = trans; }
+
 private:
+	float mPositiveX, mPositiveY, mPositiveZ, mNegativeX, mNegativeY, mNegativeZ;
+
 	std::vector<glm::vec3>  mCollisionPoints;
 	glm::vec3				mCollisionOrigin;
 
-	void Initialize(float rightX, float leftX, float topY, float botY, float farZ, float nearZ);
+	void InitializeCollisionBox();
 };
 
 #endif

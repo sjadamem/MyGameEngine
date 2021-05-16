@@ -46,6 +46,10 @@ public:
 
 	~Mesh() { };
 	
+	void FindMaximumPoints(
+		float& posX, float& negX,
+		float& posY, float& negY,
+		float& posZ, float& negZ);
 	void Render(Shader* shader);
 
 //	void Initialize(Vertex* vertices, unsigned int* indices, BoneData* bones = nullptr);

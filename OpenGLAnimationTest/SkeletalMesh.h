@@ -11,6 +11,8 @@ public:
 		unsigned int* indices, const unsigned int& nrIndices, 
 		Texture* textures, const unsigned int& nrTextures);
 
+	
+
 protected:
 	void Initialize();
 
