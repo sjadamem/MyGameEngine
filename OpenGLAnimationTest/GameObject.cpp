@@ -4,6 +4,9 @@ GameObject::GameObject(const std::string& modelPath, glm::vec3 pos, glm::vec3 ro
 	mPosition(pos), mRotation(rot), mScale(scale)
 {
 	Model m(modelPath);
+
+	mTransform = Transform(pos, rot, scale);
+
 	mSkeleton = m.GetSkeleton();
 	mMeshes = m.GetMeshes();
 
@@ -39,6 +42,7 @@ void GameObject::CreateCollision()
 
 void GameObject::Update(float deltaTime)
 {
+//	mTransform.Update();
 	UpdateModelMatrix();
 	mAnimator->Update(deltaTime);
 }
@@ -49,7 +53,7 @@ void GameObject::Render(Shader* shader)
 	for (unsigned int i = 0; i < matrices.size(); i++)
 		shader->SetMat4("boneMatrices[" + std::to_string(i) + "]", matrices[i]);
 
-	shader->SetMat4("model", mModelMatrix);
+	shader->SetMat4("model", mTransform.mLocalMatrix);
 	
 	for (unsigned int i = 0; i < mMeshes.size(); i++)
 		mMeshes[i]->Render(shader);

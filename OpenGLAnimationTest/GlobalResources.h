@@ -26,7 +26,12 @@ public:
 	static glm::mat4 aiMat4_to_glmMat4(const aiMatrix4x4 mat);
 	static glm::quat aiQuat_to_glmQuat(const aiQuaternion quat);
 	static glm::vec3 aiVec3_to_glmVec3(const aiVector3D mat);
-	
+
+/*	
+**********NOTE**********
+Make another static class 'MathResources' that does mathematical calculations
+*/
+
 private:
 	static float lastTime;
 

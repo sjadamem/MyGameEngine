@@ -25,6 +25,8 @@ class GameObject
 {
 public:
 
+//	Transform		mTransform;
+	Skeleton		mSkeleton;
 //	string			mName;
 
 	GameObject() {}
@@ -39,21 +41,20 @@ public:
 	
 	void CreateCollision();
 
-	inline glm::vec3 getRotation() { return mRotation; }
+	inline glm::vec3 getRotation() { return mTransform.mEulerAngles; }
 
 	inline void StartAnimator() { mAnimator->StartAnimator(); }
 	inline void StopAnimator() { mAnimator->StopAnimator(); }
 
-	void Move(glm::vec3 translate) { mPosition += translate; }
-	void Rotate(glm::vec3 rotate) { mRotation += rotate; }
-	void Scale(glm::vec3 scale) { mScale += scale; }
+	void Move(glm::vec3 translate) { mTransform.Translate(translate); }
+	void Rotate(glm::vec3 rotate) { mTransform.Rotate(rotate); }
+	void Scale(glm::vec3 scale) { mTransform.Scale(scale); }
 
 	void Update(float deltaTime);
 	void Render(Shader* shader);
 
 private:
 //	Is there any reason to separate these from the Model object?
-	Skeleton		mSkeleton;
 	vector<Mesh*>	mMeshes;
 
 	Animator*		mAnimator;
@@ -65,14 +66,15 @@ private:
 	this GameObject or have access to the relevant vectors instead of referencing each vector
 	separately.
 	Should I make this Transform object PUBLIC or PRIVATE? */
-//	Transform		mTransform;
 
 	glm::vec3		mPosition;
 //	Consider using a quaternion instead of a vector.
 //	You will have to research the math behind quaternions (euler angles) before using it.
-//	glm::quat		mRotation;
+	glm::quat		mRotationQ;
 	glm::vec3		mRotation;
 	glm::vec3		mScale;
+
+	Transform		mTransform;
 
 //	Is there any reason to have a model matrix property for a GameObject? It would probably be
 //	better to create a function to make and return the matrix in the Transform class and only call

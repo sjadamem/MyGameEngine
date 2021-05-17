@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include <glm/gtc/quaternion.hpp>
 #include <iostream>
 #include <string>
 
@@ -11,6 +12,8 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "GameObject.h"
+#include "Transform.h"
+#include "Camera.h"
 
 #include "stb_image.h"
 
@@ -20,11 +23,19 @@ const unsigned int SCREEN_HEIGHT = 600;
 using namespace std;
 
 void processInput(GLFWwindow* window);
+void mouse_position_callback(GLFWwindow* window, double x, double y);
+
+bool mouse = true;
+float lastX, lastY = 0.0f;
 
 GameObject* human;
+Camera* camera;
 
-glm::vec3 modelRotate(0.0f);
+glm::vec3 mEulerAngles(0.0f, 0.0f, 0.0f);
 unsigned int animIndex = 0;
+
+void processInput(GLFWwindow* window);
+void mouse_position_callback(GLFWwindow* window, double x, double y);
 
 int main()
 {
@@ -44,6 +55,8 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSetCursorPosCallback(window, mouse_position_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -56,59 +69,38 @@ int main()
 
 	stbi_set_flip_vertically_on_load(true);
 
+	camera = new Camera(glm::vec3(0.0f, 1.0f, 10.0f));
+
 	Shader shader("Shaders/model.vert", "Shaders/model.frag");
-//	monster = new Model(glm::vec3(0.0f), glm::vec3(90.0f, 0.0f, 90.0f), glm::vec3(0.5f));
-	human = new GameObject("Models/Human/human.fbx", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.03f));
-	
-//	human.AddAnimation("walk", "Models/Human/walk2.fbx", true);
+
+	human = new GameObject("Models/Human/human.fbx", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.005f));
 	human->AddAnimation("run", "Models/Human/human.fbx", true);
 	human->SetCurrentAnimation("idle");
 	
 	human->StartAnimator();
-	human->CreateCollision();
 
 	shader.Use();
 
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
-	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 1.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		
+	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 	shader.SetMat4("projection", proj);
-	shader.SetMat4("view", view);
 	
 	while (!glfwWindowShouldClose(window))
 	{
 		GlobalResources::updateDeltaTime();
+		
+		glm::mat4 view = camera->GetViewMatrix();
+		shader.SetMat4("view", view);
 
 		processInput(window);
 		
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+//		glm::vec3 rot = glm::vec3(70.0f, 0.0f, 0.0f) * GlobalResources::deltaTime;
 
-		glm::vec3 rot = glm::vec3(0.0f, 70.0f, 0.0f) * GlobalResources::deltaTime;
-		modelRotate += rot;
-
-		human->Rotate(rot);
-
-		if (modelRotate.y > 360.0f)
-		{
-			modelRotate = glm::vec3(0.0f, fmod(modelRotate.y, 360.0f), 0.0f);
-			animIndex++;
-			if (animIndex == 4)
-				animIndex = 1;
-
-			switch (animIndex)
-			{
-			case 1: human->SetCurrentAnimation("idle");
-				break;
-			case 2: human->SetCurrentAnimation("walk");
-				break;
-			case 3: human->SetCurrentAnimation("run");
-				break;
-			default: break;
-			}
-		}
-
-//		cout << modelRotate.y << endl;
+//		human->Rotate(rot);
 
 		human->Update(GlobalResources::deltaTime);
 		
@@ -124,10 +116,40 @@ int main()
 
 void processInput(GLFWwindow* window)
 {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
 	if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
 		human->SetCurrentAnimation("idle");
 	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 		human->SetCurrentAnimation("walk");
 	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 		human->SetCurrentAnimation("run");
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera->Move(FORWARD, GlobalResources::deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera->Move(BACKWARD, GlobalResources::deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera->Move(RIGHT,	GlobalResources::deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera->Move(LEFT, GlobalResources::deltaTime);
+}
+
+void mouse_position_callback(GLFWwindow* window, double x, double y)
+{
+	if (mouse)
+	{
+		lastX = (float)x;
+		lastY = (float)y;
+		mouse = false;
+	}
+
+	float xOffset = (float)x - lastX;
+	float yOffset = lastY - (float)y;		//y - lastY does reverse yOffset. Friends don't let friends play with reverse camera controls!
+
+	lastX = (float)x;
+	lastY = (float)y;
+
+	camera->Turn(xOffset, yOffset, GlobalResources::deltaTime);
 }

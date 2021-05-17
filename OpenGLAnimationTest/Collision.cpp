@@ -13,6 +13,11 @@ Collision::Collision(
 	InitializeCollisionBox();
 }
 
+void Collision::Update()
+{
+
+}
+
 bool Collision::CheckCollision()
 {
 	//This is a test of pushing with GitHub and GitKraken
