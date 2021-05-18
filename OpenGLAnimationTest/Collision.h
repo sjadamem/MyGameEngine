@@ -35,7 +35,7 @@ public:
 	bool CheckCollision();
 
 //	inline void SetNewTransform(Transform* trans) { mTransform = trans; }
-
+//	I am testing GitKraken again because I am frustrated and can't figure it out!
 private:
 	float mMaxX, mMaxY, mMaxZ, mMinX, mMinY, mMinZ;
 
