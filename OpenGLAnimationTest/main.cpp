@@ -9,11 +9,13 @@
 #include "GlobalResources.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "Mesh.h"
 #include "Model.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Cube.h"
+
+#include "StaticMesh.h"
 
 #include "stb_image.h"
 
@@ -69,31 +71,42 @@ int main()
 
 	stbi_set_flip_vertically_on_load(true);
 
+	Mesh* mesh = new StaticMesh(Cube());
+
 	camera = new Camera(glm::vec3(0.0f, 1.0f, 10.0f));
 
-	Shader shader("Shaders/model.vert", "Shaders/model.frag");
+	Shader animateShader("Shaders/model.vert", "Shaders/model.frag");
+	Shader meshShader	("Shaders/basic.vert", "Shaders/basic.frag");
 
-	human = new GameObject("Models/Human/human.fbx", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.005f));
+//	Shader 
+	human = 
+		new GameObject(
+			"Models/Human/human.fbx", 
+			glm::vec3(0.0f, -1.0f, 0.0f), 
+			glm::vec3(0.0f), 
+			glm::vec3(0.005f)
+	);
 	human->AddAnimation("run", "Models/Human/human.fbx", true);
 	human->SetCurrentAnimation("idle");
 	
 	human->StartAnimator();
 
-	shader.Use();
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
-	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+//	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 1.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	shader.SetMat4("projection", proj);
 	
 	while (!glfwWindowShouldClose(window))
 	{
 		GlobalResources::updateDeltaTime();
 		
+		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 		glm::mat4 view = camera->GetViewMatrix();
-		shader.SetMat4("view", view);
-
+		
 		processInput(window);
+		
+		animateShader.Use();
+		animateShader.SetMat4("projection", proj);
+		animateShader.SetMat4("view", view);
 		
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -103,9 +116,13 @@ int main()
 //		human->Rotate(rot);
 
 		human->Update(GlobalResources::deltaTime);
-		
-		human->Render(&shader);
+		human->Render(&animateShader);
 
+		meshShader.Use();
+		meshShader.SetMat4("projection", proj);
+		meshShader.SetMat4("view", view);
+		meshShader.SetMat4("model", glm::mat4(1.0f));
+		mesh->Render(&meshShader);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

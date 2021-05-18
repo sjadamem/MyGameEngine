@@ -44,7 +44,7 @@ public:
 		unsigned int* indices, const unsigned int& nrIndices,
 		Texture* textures, const unsigned int& nrTextures);
 
-	~Mesh() { };
+	~Mesh();
 	
 	void FindMaximumPoints(
 		float& posX, float& negX,
@@ -55,7 +55,7 @@ public:
 //	void Initialize(Vertex* vertices, unsigned int* indices, BoneData* bones = nullptr);
 
 protected:
-	VertexData* mVertices;
+	VertexData*		mVertices;
 	unsigned int	mNrVertices;
 
 	unsigned int*	mIndices;
