@@ -25,13 +25,6 @@ Mesh::Mesh(
 	mNrTextures = nrTextures;
 }
 
-Mesh::~Mesh()
-{
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteVertexArrays(1, &VAO);
-}
-
 void Mesh::FindMaximumPoints(float& posX, float& negX, float& posY, float& negY, float& posZ, float& negZ)
 {
 	for (unsigned int i = 0; i < mNrVertices; i++)
