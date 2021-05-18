@@ -24,6 +24,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SkeletalMesh.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -42,6 +44,8 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Shape.h" />
     <ClInclude Include="SkeletalMesh.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="GameObject.h" />
