@@ -131,7 +131,7 @@ void Model::processMesh(const aiScene* scene, const aiMesh* mesh)
 
 void Model::processMeshes(const aiScene * scene, const aiMesh * mesh)
 {
-	vector<VertexBoneData>	vertices;
+	vector<VertexData>	vertices;
 	vector<unsigned int> indices;
 //	vector<BoneData>	boneData;
 	vector<Texture>		textures;
@@ -139,7 +139,7 @@ void Model::processMeshes(const aiScene * scene, const aiMesh * mesh)
 	//VERTEX DATA (POSITION, NORMALS, TEXTURE COORDS)
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
-		VertexBoneData vertex;
+		VertexData vertex;
 
 		glm::vec3 vec;
 		vec.x = mesh->mVertices[i].x;

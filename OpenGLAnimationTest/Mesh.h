@@ -40,7 +40,7 @@ class Mesh
 public:
 
 	Mesh() { };
-	Mesh(VertexBoneData* vertices, const unsigned int& nrVertices,
+	Mesh(VertexData* vertices, const unsigned int& nrVertices,
 		unsigned int* indices, const unsigned int& nrIndices,
 		Texture* textures, const unsigned int& nrTextures);
 
@@ -55,7 +55,7 @@ public:
 //	void Initialize(Vertex* vertices, unsigned int* indices, BoneData* bones = nullptr);
 
 protected:
-	VertexBoneData* mVertices;
+	VertexData* mVertices;
 	unsigned int	mNrVertices;
 
 	unsigned int*	mIndices;

@@ -1,11 +1,11 @@
 #include "Mesh.h"
 
 Mesh::Mesh(
-	VertexBoneData* vertices, const unsigned int& nrVertices,
+	VertexData* vertices, const unsigned int& nrVertices,
 	unsigned int* indices, const unsigned int& nrIndices,
 	Texture* textures, const unsigned int& nrTextures)
 {
-	mVertices	= new VertexBoneData[nrVertices];
+	mVertices	= new VertexData[nrVertices];
 	for (unsigned int i = 0; i < nrVertices; i++)
 		mVertices[i] = *(vertices + i);
 

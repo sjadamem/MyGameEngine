@@ -34,15 +34,14 @@ public:
 
 	bool CheckCollision();
 
-	inline void SetNewTransform(Transform* trans) { mTransform = trans; }
+//	inline void SetNewTransform(Transform* trans) { mTransform = trans; }
 
 private:
-	float mPositiveX, mPositiveY, mPositiveZ, mNegativeX, mNegativeY, mNegativeZ;
+	float mMaxX, mMaxY, mMaxZ, mMinX, mMinY, mMinZ;
 
 	std::vector<glm::vec3>  mCollisionPoints;
 	glm::vec3				mCollisionOrigin;
 
-	void InitializeCollisionBox();
 };
 
 #endif

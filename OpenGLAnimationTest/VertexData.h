@@ -6,15 +6,6 @@
 
 const int MAX_BONE_PER_VERTEX = 4;
 
-struct VertexData
-{
-	glm::vec3	Position;
-	glm::vec3	Normals;
-	glm::vec2	TexCoords;
-	glm::vec4	Weight;
-	glm::uvec4	ID;
-};
-
 struct Vertex
 {
 	glm::vec3	Position;
@@ -22,7 +13,7 @@ struct Vertex
 	glm::vec2	TexCoords;
 };
 
-struct VertexBoneData
+struct VertexData
 {
 	glm::vec3		Position;
 	glm::vec3		Normals;
@@ -31,7 +22,23 @@ struct VertexBoneData
 	float			Weights[MAX_BONE_PER_VERTEX];
 	unsigned int	IDs[MAX_BONE_PER_VERTEX];
 
-	VertexBoneData()
+	VertexData()
+	{
+		memset(IDs, -1, MAX_BONE_PER_VERTEX * sizeof(IDs[0]));
+		memset(Weights, 0, MAX_BONE_PER_VERTEX * sizeof(Weights[0]));
+	}
+
+	VertexData(float pX, float pY, float pZ, float nX, float nY, float nZ, float tX, float tY) :
+		Position(glm::vec3(pX, pY, pZ)), 
+		Normals(glm::vec3(nX, nY, nZ)), 
+		TexCoords(glm::vec2(tX, tY))
+	{
+		memset(IDs, -1, MAX_BONE_PER_VERTEX * sizeof(IDs[0]));
+		memset(Weights, 0, MAX_BONE_PER_VERTEX * sizeof(Weights[0]));
+	}
+
+	VertexData(glm::vec3 pos, glm::vec3 nor, glm::vec2 tex) : 
+		Position(pos), Normals(nor), TexCoords(tex)
 	{
 		memset(IDs, -1, MAX_BONE_PER_VERTEX * sizeof(IDs[0]));
 		memset(Weights, 0, MAX_BONE_PER_VERTEX * sizeof(Weights[0]));

@@ -1,15 +1,14 @@
-#include "SkeletalMesh.h"
+#include "StaticMesh.h"
 
-SkeletalMesh::SkeletalMesh(
-	VertexData* vertices, const unsigned int& nrVertices,
-	unsigned int* indices, const unsigned int& nrIndices,
-	Texture* textures, const unsigned int& nrTextures) :
-	Mesh(vertices, nrVertices, indices, nrIndices, textures, nrTextures)
+StaticMesh::StaticMesh(
+	VertexData* vertices, const unsigned int& nrVertices, 
+	unsigned int* indices, const unsigned int& nrIndices, 
+	Texture* textures, const unsigned int& nrTextures)
 {
 	Initialize();
 }
 
-void SkeletalMesh::Initialize()
+void StaticMesh::Initialize()
 {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -29,9 +28,6 @@ void SkeletalMesh::Initialize()
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(offsetof(VertexData, TexCoords)));
 	glEnableVertexAttribArray(3);
-	glVertexAttribIPointer(3, 4,GL_INT,				sizeof(VertexData), (GLvoid*)(offsetof(VertexData, IDs)));
-	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (GLvoid*)(offsetof(VertexData, Weights)));
 
 
 	glBindVertexArray(0);
